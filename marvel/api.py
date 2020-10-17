@@ -26,16 +26,18 @@ def _generate_url(relpath):
     ts = _timestamp()
     api_key = _PUB_KEY
     hash_value = _generate_hash(ts, _PRIV_KEY, _PUB_KEY)
-    query = "?ts=" + str(ts) + "&apikey=" + api_key + "&hash=" + hash_value
-    url = BASE_URL + relpath + query
+    params = "?ts=" + str(ts) + "&apikey=" + api_key + "&hash=" + hash_value
+    url = BASE_URL + relpath + params
     return url
 
-def get(relpath):
+def get(relpath, params={}):
     url = _generate_url(relpath)
-    response = requests.get(url)
+    response = requests.get(url, params=params)
     if response.status_code != 200:
         raise Exception(f"get failed with response code {response.status_code}")
     body = response.json()
     return body
+
+    
 
 
