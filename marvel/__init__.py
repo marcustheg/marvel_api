@@ -35,10 +35,29 @@ SAMPLE_NAMES = ['Daken',
  'She-Hulk (Lyra)',
  'Thundra']
 
+def _unique_names(all_names):
+    return list(set(all_names))
+   
 def split_name(name):
+    # we take a name string and we split into a list of name strings
+    # by spliting on the spaces
     raw_names = name.split(" ")
+    # we use a list comprehension to clean up unwanted characters
+    # from each of the names
     return [p.replace("(", "").replace(")", "") for p in raw_names]
 
 def split_names(list_of_names):
-    return [name for name in list_of_names]
+    # return [split_name(name) for name in list_of_names]
+    list_of_names = SAMPLE_NAMES
+    all_names = []
+    for full_name in list_of_names:
+        # short names looks like this: ["daken"]
+        short_names = split_name(full_name)
+        for short_name in short_names:
+            # short name looks like this: "daken"
+            all_names.append(short_name)
+            # all names looks like this: [daken]
+    return all_names
+
+
     
