@@ -9,6 +9,8 @@ series
 
 from marvel import api
 
+import random 
+
 def get_characters_by_series(series):
     return api.get("characters", params={"series": series})
 
@@ -48,7 +50,6 @@ def split_name(name):
 
 def split_names(list_of_names):
     # return [split_name(name) for name in list_of_names]
-    list_of_names = SAMPLE_NAMES
     all_names = []
     for full_name in list_of_names:
         # short names looks like this: ["daken"]
@@ -59,5 +60,11 @@ def split_names(list_of_names):
             # all names looks like this: [daken]
     return all_names
 
-
+def random_character_name(character_resp):
+    full_names = character_names(character_resp)
+    short_names = split_names(full_names)
+    uniques = _unique_names(short_names)
+    new_name_parts = random.choices(uniques, k=2)
+    new_name = " ".join(new_name_parts)
+    return new_name
     
