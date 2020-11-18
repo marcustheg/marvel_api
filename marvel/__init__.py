@@ -64,6 +64,8 @@ def random_character_name(character_resp):
     full_names = character_names(character_resp)
     short_names = split_names(full_names)
     uniques = _unique_names(short_names)
+    if len(uniques) < 2:
+        return "there was no name"
     new_name_parts = random.choices(uniques, k=2)
     new_name = " ".join(new_name_parts)
     return new_name
