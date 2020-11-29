@@ -15,7 +15,9 @@ class StaticResource(object):
         # do some sanity check on the filename
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/css'
-        with open(filename, 'r') as f:
+        relpath = os.path.join('server/static', filename)
+        abspath = os.path.abspath(relpath)
+        with open(abspath, 'r') as f:
             resp.body = f.read()
 
 
@@ -26,19 +28,19 @@ class HelloResource(object):
         resp.content_type = 'text/html'
         resp.body = template.render()
 
-class MarvelResource(object):
+class RandomCharacterResource(object):
     def on_get(self, req, resp):
         """Handles GET requests for marvel characters"""
+        series = req.params["series"]
+        character_resp = marvel.get_characters_by_series(series)
+        name = marvel.random_character_name(character_resp)
         resp.status = falcon.HTTP_200  # This is the default status
-        resp.body = ('\nTwo things awe me most, the starry sky '
-                     'above me and the moral law within me.\n'
-                     '\n'
-                     '    ~ Immanuel Kant\n\n')
+        resp.body = 'welcome to the heroes page.\n\n\t' + name
 
 app = falcon.API()
 app.add_route('/', HelloResource())
 app.add_route('/static/{filename}', StaticResource())
-# app.add_route('/', MarvelResource())
+app.add_route('/heroes/random/', RandomCharacterResource())
 
 # from flask import Flask, render_template, request
 # app = Flask(__name__)
