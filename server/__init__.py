@@ -3,6 +3,7 @@ import marvel
 import os
 import falcon
 import jinja2
+import json
 
 
 def load_template(name):
@@ -20,6 +21,15 @@ class StaticResource(object):
         with open(abspath, 'r') as f:
             resp.body = f.read()
 
+class RandomCharacterApi(object):
+    def on_get(self, req, resp):
+        """Handles GET requests for marvel characters"""
+        series = req.params["series"]
+        character_resp = marvel.get_characters_by_series(series)
+        name = marvel.random_character_name(character_resp)
+        payload = {"name": name}
+        resp.status = falcon.HTTP_200  # This is the default status
+        resp.body = json.dumps(payload)
 
 class HelloResource(object):
     def on_get(self, req, resp):
@@ -41,6 +51,7 @@ app = falcon.API()
 app.add_route('/', HelloResource())
 app.add_route('/static/{filename}', StaticResource())
 app.add_route('/heroes/random/', RandomCharacterResource())
+app.add_route('/api/heroes/random/', RandomCharacterApi())
 
 # from flask import Flask, render_template, request
 # app = Flask(__name__)
