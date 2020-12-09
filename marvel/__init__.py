@@ -27,6 +27,8 @@ def get_results(character_resp):
 
 def character_names(character_resp):
     results = get_results(character_resp)
+    items = [(character["name"], character["id"]) for character in results]
+    print(items)
     return [character["name"] for character in results]
 
 SAMPLE_NAMES = ['Daken',

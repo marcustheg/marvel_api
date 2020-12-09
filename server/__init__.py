@@ -27,7 +27,7 @@ class RandomCharacterApi(object):
         series = req.params["series"]
         character_resp = marvel.get_characters_by_series(series)
         name = marvel.random_character_name(character_resp)
-        payload = {"name": name}
+        payload = {"name": name, "series": series}
         resp.status = falcon.HTTP_200  # This is the default status
         resp.body = json.dumps(payload)
 

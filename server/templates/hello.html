@@ -6,29 +6,32 @@
 </form>
 <hr>
 <input type="text" name="series" id="series_for_api">
-<button onclick="shout()">HIT THE API!!!</button>
+<button onclick="handle_click()">HIT THE API!!!</button>
 <pre id="hero_for_api">"I am not here"</pre>
 <script>
-    function fetch_random_hero(series){
-        let url = "http://localhost:8000/api/heroes/random?series=" + series
-        return fetch(url).then(resp => resp.json()).then(payload => payload.name)
-        
-    }
-    console.log("I am outside of a function!")
+    // set up the elements
     let seriesElement = undefined
     let heroElement = undefined
-    function shout(){
-        console.log("shout, shout, let it all out", seriesElement.value)
-        let series = seriesElement.value
-        fetch_random_hero(series).then(function(name){
-            heroElement.innerHTML = name
-            console.log("my name is mr.poopybutthole")
-        })
-    }
     window.onload = function(){ 
         console.log("I am inside of window.onload!")
         seriesElement = document.getElementById("series_for_api")
         heroElement = document.getElementById("hero_for_api")
+    }
+
+    // fetches a random hero from the json api
+    function fetch_random_hero(series){
+        let url = "http://localhost:8000/api/heroes/random?series=" + series
+        return fetch(url).then(resp => resp.json())
+        
+    }
+
+    // fetches a random hero and displays it on the series element
+    function handle_click(){
+        console.log("shout, shout, let it all out", seriesElement.value)
+        let series = seriesElement.value
+        fetch_random_hero(series).then(function(payload){
+            heroElement.innerHTML = payload.name
+        })
     }
 
     
